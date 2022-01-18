@@ -63,4 +63,8 @@ def upload_data(query=query, project_id="driven-stage-300605"):
     for row in rows:
         print(row)
 
+def read_csv_file(csv_file_path="D:\\Data\\SFMC\\JourneyMessageHistory_Others.csv"):
+    import pandas as pd
+
+
 upload_data()
