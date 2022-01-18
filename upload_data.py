@@ -1,9 +1,12 @@
+from datetime import datetime
+today = datetime.today().strftime("%Y%m%d")
+
 query = (
-    """
+    '''
         MERGE
-        GS_Data.JourneyMessageHistory_Others T
+        china-airlines-338006.JourneyMessage.JourneyMessageHistory_Others T
         USING
-        GS_Data.JourneyMessageHistory_Others_tmp_ddo_61dfdb11590255348f5c81e0 S
+        china-airlines-338006.JourneyMessage.JourneyMessageHistory_Others_{name} S
         ON
         T.system_id = S.system_id
         WHEN NOT MATCHED THEN INSERT (`app_fail`, `app_open`, `app_success`, `arrival_station__c`, `birthday_event_date`, `card_no__c`, `card_type__c`, `content_name__c`, `date`, `delivered_count`, `departure_station__c`, `edm_bounce`, `edm_click`, `edm_open`, `edm_sent`, `iid`, `journey_content__r_a_b_test__c`, `nfp_card_id_check`, `nfp_delivered`, `nfp_sends`, `pnr_number`, `send_count`, `sent_date__c`, `sms_delivered`, `sms_undelivered`, `status__c`, `system_id`, `trn_card_id_check`, `trn_delivered`, `trn_sends`, `type__c`, `utm_content__c`) VALUES (`app_fail`, `app_open`, `app_success`, `arrival_station__c`, `birthday_event_date`, `card_no__c`, `card_type__c`, `content_name__c`, `date`, `delivered_count`, `departure_station__c`, `edm_bounce`, `edm_click`, `edm_open`, `edm_sent`, `iid`, `journey_content__r_a_b_test__c`, `nfp_card_id_check`, `nfp_delivered`, `nfp_sends`, `pnr_number`, `send_count`, `sent_date__c`, `sms_delivered`, `sms_undelivered`, `status__c`, `system_id`, `trn_card_id_check`, `trn_delivered`, `trn_sends`, `type__c`, `utm_content__c`)
@@ -43,13 +46,21 @@ query = (
         trn_sends = S.trn_sends,
         type__c = S.type__c,
         utm_content__c = S.utm_content__c;
-    """
+    '''
+    .format(name=today)
 )
 
-def upload_data(query, project_id="driven-stage-300605"):
+
+def upload_data(query=query, project_id="driven-stage-300605"):
+    print(__name__)
     import os
     os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = "bigquery_key.json"
     from google.cloud import bigquery as bq
-    client = bq.Client(project_id)
+    client = bq.Client()
     print("upload data")
     query_job = client.query(query)
+    rows = query_job.result()
+    for row in rows:
+        print(row)
+
+upload_data()
