@@ -1,59 +1,12 @@
 from google.cloud import bigquery as bq
-
 import os
 os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = "bigquery_key.json"
 
 from datetime import datetime
 today = datetime.today().strftime("%Y%m%d")
 
-query = (
-    '''
-        CREATE TABLE `china-airlines-338006.JourneyMessage.JourneyMessageHistory_Others_{name}` (
-            system_id STRING,
-            sent_date__c STRING,
-            content_name__c STRING,
-            journey_content__r_a_b_test__c STRING,
-            type__c STRING,
-            card_no__c STRING,
-            card_type__c STRING,
-            status__c STRING,
-            arrival_station__c STRING,
-            departure_station__c STRING,
-            pnr_number STRING,
-            utm_content__c STRING,
-            birthday_event_date STRING,
-            iid STRING,
-            date date,
-            edm_sent INT,
-            edm_bounce INT,
-            edm_open INT,
-            edm_click INT,
-            app_open INT,
-            app_success INT,
-            app_fail INT,
-            sms_delivered INT,
-            sms_undelivered INT,
-            trn_delivered INT,
-            trn_sends INT,
-            delivered_count INT,
-            send_count INT,
-            nfp_delivered INT,
-            nfp_sends INT,
-            trn_card_id_check STRING,
-            nfp_card_id_check STRING
-        );
-    '''
-    .format(name=today)
-)
-
-
-def upload_data(query=query, project_id="driven-stage-300605"):
+def upload_data():
     client = bq.Client()
-    # query_job = client.query(query)
-    # rows = query_job.result()
-    # for row in rows:
-    #     print(row)
-
     job_config = bq.LoadJobConfig(
         schema=[
             bq.SchemaField('system_id', 'STRING'),
@@ -75,7 +28,7 @@ def upload_data(query=query, project_id="driven-stage-300605"):
         source_format=bq.SourceFormat.CSV,
     )
 
-    uri = "gs://journey_message/1JourneyMessageHistory_Others - 工作表1 (1).csv"
+    uri = "gs://jouney_message/history/「1JourneyMessageHistory_Others」的副本 - 1月12日，上午7:14.csv"
 
     table_id = 'china-airlines-338006.JourneyMessage.JourneyMessageHistory_Others_{name}' .format(name = today)
     load_job = client.load_table_from_uri(
