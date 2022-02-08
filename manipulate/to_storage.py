@@ -2,15 +2,17 @@ from google.cloud import storage
 import os
 os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = "bigquery_key.json"
 
-def upload_blob(date):
+from datetime import datetime
+today = datetime.today().strftime("%Y%m%d")
+
+def upload_blob(date, source_file_name="/Users/ssk/Desktop/JourneyMessageHistory_Others.csv",bucket_name = "jouney_message",  destination_blob_name="history/JourneyMessageHistory_Others_{date}.csv" .format(date=today)):
     """Uploads a file to the bucket."""
     # The ID of your GCS bucket
-    bucket_name = "jouney_message"
+    # bucket_name = "jouney_message"
     # The path to your file to upload
-    source_file_name = "/Users/ssk/Desktop/hello_world.csv"
-    # source_file_name = new_year_list[10]
+    # source_file_name = ""
     # The ID of your GCS object
-    destination_blob_name = "history/JourneyMessageHistory_Others_{date}.csv" .format(date=date)
+    # destination_blob_name = "history/JourneyMessageHistory_Others_{date}.csv" .format(date=date)
 
     storage_client = storage.Client()
     bucket = storage_client.bucket(bucket_name)

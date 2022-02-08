@@ -1,7 +1,6 @@
-import os
-from xxlimited import Str
-os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = "bigquery_key.json"
 from google.cloud import bigquery as bq
+import os
+os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = "bigquery_key.json"
 
 def upsert_table(date):
 
