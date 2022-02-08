@@ -8,6 +8,7 @@ def upload_blob(date):
     bucket_name = "jouney_message"
     # The path to your file to upload
     source_file_name = "/Users/ssk/Desktop/hello_world.csv"
+    # source_file_name = new_year_list[10]
     # The ID of your GCS object
     destination_blob_name = "history/JourneyMessageHistory_Others_{date}.csv" .format(date=date)
 

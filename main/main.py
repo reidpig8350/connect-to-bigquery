@@ -1,14 +1,5 @@
-def make_copy(date):
+from manipulate.make_copy import make_copy
 
-    import shutil
-    import os
-
-    src = "D:\\Data\\SFMC\\JourneyMessageHistory_Others.csv"
-    dst = "D:\\Data\\SFMC\\history\\JourneyMessageHistory_Others{timestamp}.csv" .format(timestamp=date)
-
-    if not os.path.exists("D:\\Data\\SFMC\\history"):
-        os.mkdir("D:\\Data\\SFMC\\history")
-    shutil.copyfile(src, dst)
 
 if __name__=="__main__":
 
@@ -17,7 +8,6 @@ if __name__=="__main__":
 
     from datetime import datetime
     today = datetime.today().strftime("%Y%m%d")
-    make_copy(today)
 
     from manipulate import to_storage
     to_storage.upload_blob(today)
@@ -27,4 +17,3 @@ if __name__=="__main__":
     create_table.upload_data(storage_file_name, today)
 
     upsert.upsert_table(today)
-    

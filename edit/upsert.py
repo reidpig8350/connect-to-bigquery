@@ -1,4 +1,7 @@
-
+import os
+from xxlimited import Str
+os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = "bigquery_key.json"
+from google.cloud import bigquery as bq
 
 def upsert_table(date):
 
@@ -19,10 +22,6 @@ def upsert_table(date):
     '''
     .format(date = date)
     )
-
-    import os
-    os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = "bigquery_key.json"
-    from google.cloud import bigquery as bq
 
     client = bq.Client()
     query_job = client.query(query)

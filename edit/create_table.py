@@ -1,13 +1,13 @@
-import re
 from google.cloud import bigquery as bq
 import os
+
 os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = "bigquery_key.json"
 
 
 
 def upload_data(uri, date):
     client = bq.Client()
-    job_config = bq.LoadJobConfig(
+    job_config_schema = bq.LoadJobConfig(
         schema=[
             bq.SchemaField('system_id', 'STRING'),
             bq.SchemaField('sent_date__c', 'STRING'),
@@ -28,11 +28,17 @@ def upload_data(uri, date):
         source_format=bq.SourceFormat.CSV,
     )
 
-    table_id = 'china-airlines-338006.JourneyMessage_records.JourneyMessageHistory_Others_{name}' .format(name = date)
+    table_id = 'china-airlines-338006.JourneyMessage_records.JourneyMessageHistory_Others_{date}' .format(date = date)
     load_job = client.load_table_from_uri(
-        uri, table_id, job_config=job_config
+        uri, table_id, job_config=job_config_schema
     )  # Make an API request.
 
     load_job.result()  # Waits for the job to complete.
     destination_table = client.get_table(table_id)  # Make an API request.
-    print("Loaded {} rows." .format(destination_table.num_rows))
+    print("Loaded {rows} rows." .format(rows = destination_table.num_rows))
+
+for i in range(28, 32):
+    date = 20220100
+    date = (date+i)
+    uri = "gs://jouney_message/history/JourneyMessageHistory_Others_{date}.csv" .format(date=date)
+    upload_data(uri, str(date))
