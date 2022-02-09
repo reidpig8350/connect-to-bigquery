@@ -1,3 +1,8 @@
+from google.cloud import bigquery as bq
+import os
+os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = "bigquery_key.json"
+
+
 def delete_table(table_id):
 
     query=(
@@ -6,3 +11,6 @@ def delete_table(table_id):
         '''
         .format(table_id)
     )
+
+    client = bq.Client()
+    query_job = client.query(query)

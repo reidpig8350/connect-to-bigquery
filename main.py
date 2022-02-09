@@ -1,12 +1,12 @@
 if __name__=="__main__":
 
-    # initialize
+    # initialize project
     import os
     os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = "bigquery_key.json"
     from datetime import datetime
     today = datetime.today().strftime("%Y%m%d")
 
-    # logging
+    # logging config.
     import logging
     log_file_route = '/Users/ssk/Desktop/bq_log.log'
     with open(log_file_route, 'a') as file:
@@ -31,7 +31,10 @@ if __name__=="__main__":
         create_table.upload_data(today, storage_file_name)
 
         # Step 3. edit source data 
-        upsert.upsert_table(today)
+        upsert.upsert_table(today) #upsert table according to the file today
+
+        # Step 4. log
+        logging.debug("Data Updated!{}" .format(today))
 
     except:
         log_message = 'Catch an exception.'
