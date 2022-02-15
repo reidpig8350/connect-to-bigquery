@@ -1,23 +1,23 @@
-if __name__=="__main__":
+# initialize project
+import os
+os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = "bigquery_key.json"
+from datetime import datetime
+today = datetime.today().strftime("%Y%m%d")
 
-    # initialize project
-    import os
-    os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = "bigquery_key.json"
-    from datetime import datetime
-    today = datetime.today().strftime("%Y%m%d")
+# logging config.
+import logging
+log_file_route = '/Users/ssk/Desktop/bq_log.log'
+with open(log_file_route, 'a') as file:
+    file.write("\n\n＝＝＝＝＝＝＝＝＝＝＝＝＝＝\n")
+FORMAT = '%(asctime)s %(levelname)s: %(message)s'
+logging.basicConfig(level=logging.DEBUG, filename=log_file_route, filemode='a', format=FORMAT)
 
-    # logging config.
-    import logging
-    log_file_route = '/Users/ssk/Desktop/bq_log.log'
-    with open(log_file_route, 'a') as file:
-        file.write("\n\n＝＝＝＝＝＝＝＝＝＝＝＝＝＝\n")
-    FORMAT = '%(asctime)s %(levelname)s: %(message)s'
-    logging.basicConfig(level=logging.DEBUG, filename=log_file_route, filemode='a', format=FORMAT)
+# import modules
+from manipulate import to_storage, make_copy
+from edit import create_table, upsert
 
+def main():
 
-    # import modules
-    from manipulate import to_storage, make_copy
-    from edit import create_table, upsert
 
     try:
         # Step 1. upload the csv files
@@ -40,3 +40,6 @@ if __name__=="__main__":
         log_message = 'Catch an exception.'
         print(log_message)
         logging.debug(log_message, exc_info=True)
+
+if __name__=="__main__":
+    main()
