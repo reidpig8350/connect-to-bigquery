@@ -1,6 +1,7 @@
 # initialize project
 import os
-os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = "bigquery_key.json"
+import string
+os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = "./bigquery_key.json"
 from datetime import datetime
 today = datetime.today().strftime("%Y%m%d")
 
@@ -17,11 +18,12 @@ from manipulate import to_storage, make_copy
 from edit import create_table, upsert
 
 def main():
-
-
     try:
+        # Step 0. download csv files from google sheets
+        from manipulate import merge_csv
+
         # Step 1. upload the csv files
-        source_file_name="/Users/ssk/Desktop/JourneyMessageHistory_Others.csv" #route of local file
+        source_file_name="./JourneyMessageHistory_Others.csv" #route of local file
         bucket_name = "jouney_message" #storage bucketname
         destination_blob_name="history/JourneyMessageHistory_Others_{date}.csv" .format(date=today) #naming new file in cloud storage
         to_storage.upload_blob(today, source_file_name, bucket_name, destination_blob_name)
@@ -43,3 +45,4 @@ def main():
 
 if __name__=="__main__":
     main()
+    

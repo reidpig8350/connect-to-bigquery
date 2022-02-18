@@ -5,7 +5,7 @@ os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = "bigquery_key.json"
 from datetime import datetime
 today = datetime.today().strftime("%Y%m%d")
 
-def upload_blob(date, source_file_name="/Users/ssk/Desktop/JourneyMessageHistory_Others.csv",bucket_name = "jouney_message",  destination_blob_name="history/JourneyMessageHistory_Others_{date}.csv" .format(date=today)):
+def upload_blob(date=today, source_file_name="D:\\Data\\SFMC\\JourneyMessageHistory_Others.csv",bucket_name = "jouney_message",  destination_blob_name="history/JourneyMessageHistory_Others_{date}.csv" .format(date=today)):
     """Uploads a file to the bucket."""
     # The ID of your GCS bucket
     # bucket_name = "jouney_message"
