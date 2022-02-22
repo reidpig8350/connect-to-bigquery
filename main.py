@@ -18,8 +18,9 @@ from manipulate import to_storage, make_copy
 from edit import create_table, upsert
 
 def main():
+    today = "30000101"
     try:
-        # Step 0. download csv files from google sheets
+        # Step 0. download csv files from google sheets, temp.
         from manipulate import merge_csv
 
         # Step 1. upload the csv files

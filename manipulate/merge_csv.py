@@ -1,11 +1,24 @@
 import gspread
 from oauth2client.service_account import ServiceAccountCredentials
+import re
+
 
 scopes = ["https://www.googleapis.com/auth/spreadsheets"]
 credentials = ServiceAccountCredentials.from_json_keyfile_name("TPESE_KEY.json", scopes)
 client = gspread.authorize(credentials)
 
-sheet_keys = ['1zBPL_pnV4MvdeLPKC7V8-aHG8r263-oQhLVrOMZ4WYY', '1SOkE5Rhgj_8Gz4Z8CqxOI9gofkMmz4IQxepTFF5x4Zg']
+sheet_keys = [
+      "https://docs.google.com/spreadsheets/d/1zBPL_pnV4MvdeLPKC7V8-aHG8r263-oQhLVrOMZ4WYY/edit#gid=0",
+      "https://docs.google.com/spreadsheets/d/1SOkE5Rhgj_8Gz4Z8CqxOI9gofkMmz4IQxepTFF5x4Zg/edit#gid=0",
+      "https://docs.google.com/spreadsheets/d/1M0PoabiySfcbMUgKOMOKNLqQhKzWUBO4XoSVjonouc0/edit#gid=0",
+      "https://docs.google.com/spreadsheets/d/1Bw2d3julQJlqMgyxKCjrIGE06vJp0puEEXkt3wNvf48/edit#gid=0",
+      "https://docs.google.com/spreadsheets/d/1TknRLmk1_TlMOIH7KJ-3qAOR71lxQuh11G5HY8b-9gY/edit#gid=0",
+      "https://docs.google.com/spreadsheets/d/1KOb7fPyRQhXZ8L6yrCjHa7OU6cxbrZ-CA1wMmZsbfFY/edit#gid=0",
+      "https://docs.google.com/spreadsheets/d/1SuL6ZuRPOCtGDFx-nGur1wEfXevWPXBvdpt0B47Ek-U/edit#gid=0",
+      "https://docs.google.com/spreadsheets/d/1Xu1BcJZijQl5_GZzuNom_6aSBwu8axGNC-KTQ7aCnLs/edit#gid=0",
+      "https://docs.google.com/spreadsheets/d/1iOxtRznybSM_rCvJrzcCWWnrQ5Yz1rw5ezfDFbTUQiY/edit#gid=0",
+      "https://docs.google.com/spreadsheets/d/1bh5u4SfsBsDvutfuhUw8EabFEQI7mFHFaZ84vqLDrvQ/edit#gid=0"
+    ]
 
 
 file_path = './JourneyMessageHistory_Others.csv'
@@ -41,7 +54,11 @@ def download(journey_name):
                         file.write(",")
                         continue
 
-journey_1 = client.open_by_key(sheet_keys[0]).sheet1
-journey_2 = client.open_by_key(sheet_keys[1]).sheet1
-download(journey_1)
-download(journey_2)
+for sheet_url in sheet_keys:
+    sheet_key = re.search(".*/d/(.*)/edit", sheet_url)[1]
+    journey = client.open_by_key(sheet_key).sheet1
+    if (not journey.get("A2")):
+        print("skip")
+        continue
+    print(sheet_url)
+    download(journey)

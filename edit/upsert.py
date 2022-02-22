@@ -17,7 +17,7 @@ def upsert_table(date):
         THEN
     UPDATE
     SET
-        status__c=s.status__c;
+        status__c=S.status__c;
     '''
     .format(date = date)
     )
