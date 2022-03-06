@@ -14,6 +14,7 @@ def delete_table(table_id):
     client = bq.Client()
     query_job = client.query(query)
 
-'''
-"china-airlines-338006.JourneyMessage_records.JourneyMessageHistory_Others_{}"
-'''
+
+# for i in range(29, 31):
+#     delete_table("china-airlines-338006.JourneyMessage_records.JourneyMessageHistory_Others_199411{}" .format(i))
+
